@@ -46,7 +46,7 @@
 <body>
 
 <header>
-    <marquee> <h1> WELCOME TO B10 KKDEVOPS at 7.30pm </h1>    </marquee> 
+    <marquee> <h1> WELCOME TO B10 KKDEVOPS at 7.30pm IST </h1>    </marquee> 
     <h3>Training | Development | Consulting</h3>
 </header>
 
