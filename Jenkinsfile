@@ -1,45 +1,24 @@
-
-
-
-node 
-{
-   //     /var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven-3.9.16/bin
-
-   def mavenHome=tool name: "maven-3.9.16"
-  stage('git checkout')
-  {
-      git branch: 'master', url: 'https://github.com/kkdevopsb10/maven-webapplication-project-kkfunda.git'
-  }
-  stage('compile')
-  {
-   sh "${mavenHome}/bin/mvn compile"
-  }
-   stage('Build')
-  {
-   sh "${mavenHome}/bin/mvn clean package"
-  }
-   stage('SQ REPORT')
-  {
-   sh "${mavenHome}/bin/mvn sonar:sonar"
-  }
-  stage('Deploy Artifact')
-  {
-   sh "${mavenHome}/bin/mvn deploy"
-  }
-
-
-    stage('Deploy to Tomcat') 
-    {
-      
-      sh """
-
-      curl -u kk:password \
---upload-file /var/lib/jenkins/workspace/scripted-way-PL-1/target/maven-web-application.war \
-"http://13.235.77.122:8080/manager/text/deploy?path=/maven-web-application&update=true"
-          
-        """
+node{
+    def MavenHome=tool name: "maven-3.9.16"
+    stage('git checkout'){
+      git branch :'master', url: 'https://github.com/nikhitha-narra-26/maven-webapplication-project-kkfunda.git'
     }
-
-	
-	
-}  // node ending
+    stage('compile'){
+        sh " ${MavenHome}/bin/mvn compile "
+    }
+    stage('Build'){
+        sh " ${MavenHome}/bin/mvn clean package "
+    }
+    stage('SQ Report'){
+        sh " ${MavenHome}/bin/mvn sonar:sonar "
+    }
+     stage('Deploy to nexus'){
+            sh " ${MavenHome}/bin/mvn clean deploy"
+     }
+     stage('deploy to tomact'){
+     sh """ curl -u kk:Password \
+--upload-file /var/lib/jenkins/workspace/scripted-way-pipeline/target/maven-web-application.war \
+"http://54.167.224.117:8080/manager/text/deploy?path=/maven-web-application&update=true"
+"""
+    }
+}
