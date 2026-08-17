@@ -1,28 +1,48 @@
+
+
+
 node 
 {
    //     /var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven-3.9.16/bin
   echo "git JOB Name: ${env.JOB_NAME}"
   echo "build number: ${env.BUILD_NUMBER}"
-  def MavenHome=tool name: "maven-3.9.16"
-  try{
-   stage('compile'){
-        sh " ${MavenHome}/bin/mvn compile "
-    }
-    stage('Build'){
-        sh " ${MavenHome}/bin/mvn clean package "
-    }
-    stage('SQ Report'){
-        sh " ${MavenHome}/bin/mvn sonar:sonar "
-    }
-     stage('Deploy to nexus'){
-            sh " ${MavenHome}/bin/mvn clean deploy"
-     }
-     stage('deploy to tomcat'){
-     sh """ 
-curl -u kk:Password \
+  def mavenHome=tool name: "maven-3.9.16"
+  
+  try
+  {
+     stage('git checkout')
+  {
+       notifyBuild('STARTED')
+      git branch: 'master', url: 'https://github.com/nikhitha-narra-26/maven-webapplication-project-kkfunda.git'
+  }
+  stage('compile')
+  {
+   sh "${mavenHome}/bin/mvn compile"
+  }
+   stage('Build')
+  {
+   sh "${mavenHome}/bin/mvn clean package"
+  }
+ /*  stage('SQ REPORT')
+  {
+   sh "${mavenHome}/bin/mvn sonar:sonar"
+  } */
+  stage('Deploy Artifact')
+  {
+   sh "${mavenHome}/bin/mvn deploy"
+  }
+
+
+    stage('Deploy to Tomcat') 
+    {
+      
+      sh """
+
+      curl -u kk:Password \
 --upload-file /var/lib/jenkins/workspace/scripted-way-pipeline/target/maven-web-application.war \
 "http://3.89.206.143:8080/manager/text/deploy?path=/maven-web-application&update=true"
-"""
+          
+        """
     }
 
   } //try ending
