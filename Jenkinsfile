@@ -21,4 +21,7 @@ node{
 "http://98.82.199.108:8080/manager/text/deploy?path=/maven-web-application&update=true"
 """
     }
+     stage('azure-qa'){
+        build job: 'azure-qa'
+    }
 }
