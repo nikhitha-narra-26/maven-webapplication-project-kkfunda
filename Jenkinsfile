@@ -18,7 +18,7 @@ node{
      stage('deploy to tomact'){
      sh """ curl -u kk:Password \
 --upload-file /var/lib/jenkins/workspace/scripted-way-pipeline/target/maven-web-application.war \
-"http://54.242.244.182:8080/manager/text/deploy?path=/maven-web-application&update=true"
+"http://98.82.199.108:8080/manager/text/deploy?path=/maven-web-application&update=true"
 """
     }
 }
